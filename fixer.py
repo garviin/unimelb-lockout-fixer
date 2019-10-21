@@ -39,3 +39,27 @@ def ise_login(username, password, link):
     time.sleep(13)
 
     browser.find_element_by_id("carousel-next").click()
+
+
+def release_rejected(mac_address):
+    Xpath="//input[@data-column-id='MACAddress']"
+
+    mac_input = browser.find_element_by_xpath(Xpath)
+    mac_input.send_keys(MAC_ADDRESS)
+    time.sleep(5)
+
+def read_admin_info():
+    with open('env.json') as json_file:
+        return json.load(json_file)
+
+info = read_admin_info()
+USERNAME = info["USERNAME"]
+PASSWORD = info["PASSWORD"]
+SITE_LINK = info["LINK"]
+VPN_HOST = info["VPN_HOST"]
+
+__auth_cisco_vpn__(USERNAME, PASSWORD, VPN_HOST)
+ise_login(USERNAME, PASSWORD, SITE_LINK)
+
+mac_address = input("Enter device MAC Address: ")
+release_rejected(mac_address)
